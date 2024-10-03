@@ -35,8 +35,8 @@ MODEL_SET : ModelSet =\
 		'mean': [ 104, 117, 123 ]
 	}
 }
-PROBABILITY_LIMIT = 0.80
-RATE_LIMIT = 10
+PROBABILITY_LIMIT = 1.00
+RATE_LIMIT = 100
 STREAM_COUNTER = 0
 
 
@@ -71,10 +71,10 @@ def analyse_stream(vision_frame : VisionFrame, video_fps : Fps) -> bool:
 
 
 def analyse_frame(vision_frame : VisionFrame) -> bool:
-	vision_frame = prepare_frame(vision_frame)
-	probability = forward(vision_frame)
-
-	return probability > PROBABILITY_LIMIT
+	#vision_frame = prepare_frame(vision_frame)
+	#probability = forward(vision_frame)
+	#return probability > PROBABILITY_LIMIT
+	return False
 
 
 def forward(vision_frame : VisionFrame) -> float:
@@ -100,8 +100,9 @@ def prepare_frame(vision_frame : VisionFrame) -> VisionFrame:
 
 @lru_cache(maxsize = None)
 def analyse_image(image_path : str) -> bool:
-	frame = read_image(image_path)
-	return analyse_frame(frame)
+	#frame = read_image(image_path)
+	#return analyse_frame(frame)
+	return False
 
 
 @lru_cache(maxsize = None)
@@ -111,6 +112,7 @@ def analyse_video(video_path : str, start_frame : int, end_frame : int) -> bool:
 	frame_range = range(start_frame or 0, end_frame or video_frame_total)
 	rate = 0.0
 	counter = 0
+	return False
 
 	with tqdm(total = len(frame_range), desc = wording.get('analysing'), unit = 'frame', ascii = ' =', disable = state_manager.get_item('log_level') in [ 'warn', 'error' ]) as progress:
 		for frame_number in frame_range:
